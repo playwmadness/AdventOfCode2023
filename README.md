@@ -9,3 +9,5 @@ Advent of Code with a different programming language for each task.
 03: Rust
 
 04: Scala
+
+05: Haskell
