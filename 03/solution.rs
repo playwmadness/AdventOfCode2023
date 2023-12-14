@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::env;
 use std::fs;
 
@@ -31,10 +31,11 @@ fn main() {
         Ok(res) => res,
     };
     let input: Vec<String> = input.lines().map(|x| x.into()).collect();
+    let n = input.len();
 
-    let mut stats: HashSet<(usize, usize)> = HashSet::new();
-    let mut gears: HashMap<(usize, usize), Vec<i32>> = HashMap::new();
+    let mut stats: HashMap<(usize, usize), Option<Vec<i32>>> = HashMap::new();
     let mut nums: Vec<Num> = vec![];
+
     for (i, line) in input.into_iter().enumerate() {
         let mut id = 0;
         let mut val = 0;
@@ -45,16 +46,17 @@ fn main() {
             } else {
                 if val > 0 {
                     nums.push(Num::new(val, id, j, i));
+                    val = 0;
                 }
 
-                val = 0;
                 id = j;
 
                 if c != '.' {
-                    stats.insert((i, j));
+                    let mut ins = None;
                     if c == '*' {
-                        gears.insert((i, j), vec![]);
+                        ins = Some(vec![]);
                     }
+                    stats.insert((i, j), ins.take());
                 }
             }
         }
@@ -62,27 +64,49 @@ fn main() {
 
     let mut res = 0;
 
-    for n in nums {
+    for num in nums {
         let mut ok = false;
-        for i in (n.line.max(1) - 1)..=(n.line + 1) {
-            for j in n.left..=n.right {
-                if !ok && stats.contains(&(i, j)) {
-                    ok = true;
-                    res += n.val;
-                }
 
-                match gears.get_mut(&(i, j)) {
-                    None => (),
-                    Some(v) => v.push(n.val),
-                };
-            }
+        let mut visit: Vec<(usize, usize)> = vec![(num.line, num.left), (num.line, num.right)];
+
+        if num.line > 0 {
+            visit.extend(
+                (num.left..=num.right)
+                    .into_iter()
+                    .map(|x| (num.line - 1, x)),
+            );
+        }
+        if num.line + 1 < n {
+            visit.extend(
+                (num.left..=num.right)
+                    .into_iter()
+                    .map(|x| (num.line + 1, x)),
+            );
+        }
+
+        for (i, j) in visit {
+            match (stats.get_mut(&(i, j)), ok) {
+                (Some(None), false) => {
+                    ok = true;
+                    res += num.val;
+                }
+                (Some(Some(v)), false) => {
+                    ok = true;
+                    res += num.val;
+                    v.push(num.val);
+                }
+                (Some(Some(v)), true) => {
+                    v.push(num.val);
+                }
+                _ => (),
+            };
         }
     }
 
     println!("Result 1: {res}");
 
     let mut res2 = 0;
-    for v in gears.into_values() {
+    for v in stats.into_values().flatten() {
         if v.len() == 2 {
             res2 += v[0] * v[1];
         }
