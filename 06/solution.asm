@@ -357,7 +357,6 @@ itoa_buff       resb    16
 
 SECTION .data
 
-neg1            dd      -1.0
 msg1            db      'Result 1: '
 msg2            db      'Result 2: '
 msg_size        equ     $ - msg2
