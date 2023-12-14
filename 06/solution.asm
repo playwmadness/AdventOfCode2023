@@ -57,7 +57,7 @@ atoi:
 ;       rax
 ;       rdi - address of the first digit
 ;out
-;       rax - contact old rax and result
+;       rax - concact old rax and result
 ;       rdi - next non digit
 _atoi:
         dec     rdi
