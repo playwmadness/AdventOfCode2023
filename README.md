@@ -15,3 +15,5 @@ Advent of Code with a different programming language for each task.
 06: nasm
 
 07: OCaml
+
+08: C#
