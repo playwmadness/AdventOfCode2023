@@ -13,3 +13,5 @@ Advent of Code with a different programming language for each task.
 05: Haskell
 
 06: nasm
+
+07: OCaml
