@@ -6,20 +6,27 @@ class Solution {
   const int SIZE = 'Z' - 'A' + 1;
   const int MEGASIZE = SIZE * SIZE * SIZE;
 
-  static int NodeToId(string node) {
+  static int NodeToId(string node)
+  {
     int val = 0;
-    foreach (char c in node) {
+    foreach (char c in node)
+    {
       val *= SIZE;
       val += c - 'A';
     }
     return val;
   }
 
-  static ulong GCD(ulong l, ulong r) {
-    while (l > 0 && r > 0) {
-      if (l > r) {
+  static ulong GCD(ulong l, ulong r)
+  {
+    while (l > 0 && r > 0)
+    {
+      if (l > r)
+      {
         l %= r;
-      } else {
+      }
+      else
+      {
         r %= l;
       }
     }
@@ -54,15 +61,20 @@ class Solution {
     int id = 0;
     int n = path.Length;
     int now = 0;
-    while (true) {
-      if (path[id % n] == 'R') {
+    while (true)
+    {
+      if (path[id % n] == 'R')
+      {
         now = rights[now];
-      } else {
+      }
+      else
+      {
         now = lefts[now];
       }
 
       id++;
-      if ((now + 1) % SIZE == 0) {
+      if ((now + 1) % SIZE == 0)
+      {
         break;
       }
     }
@@ -71,23 +83,30 @@ class Solution {
 
 
     ulong lcm = (ulong)(id);
-    for (int i = 1; i < SIZE * SIZE; i++) {
+    for (int i = 1; i < SIZE * SIZE; i++)
+    {
       now = i * SIZE;
 
-      if (rights[now] == 0) {
+      if (rights[now] == 0)
+      {
         continue;
       }
 
       id = 0;
-      while (true) {
-        if (path[id % n] == 'R') {
+      while (true)
+      {
+        if (path[id % n] == 'R')
+        {
           now = rights[now];
-        } else {
+        }
+        else
+        {
           now = lefts[now];
         }
 
         id++;
-        if ((now + 1) % SIZE == 0) {
+        if ((now + 1) % SIZE == 0)
+        {
           break;
         }
       }
